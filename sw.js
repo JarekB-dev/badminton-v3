@@ -75,8 +75,8 @@ async function staleWhileRevalidate(req, cacheName = RUNTIME_CACHE) {
   const network = fetch(req).then(res => {
     cache.put(req, res.clone());
     return res;
-  }).catch(() => null);
-  return cached || network || caches.match(OFFLINE_URL);
+  }).catch(() => caches.match(OFFLINE_URL));
+  return cached || network;
 }
 
 async function cacheFirst(req, cacheName, maxEntries = 50) {
